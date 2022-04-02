@@ -1,0 +1,12 @@
+INSERT INTO GENRES (ID, NAME)
+VALUES
+(1, 'Детектив');
+
+INSERT INTO AUTHORS (ID, NAME)
+VALUES
+(1, 'Агата Кристи');
+
+INSERT INTO BOOKS (ID, NAME, AUTHOR_ID, GENRE_ID)
+VALUES
+(1, 'Пуаро', 1, 1);
+
