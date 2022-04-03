@@ -1,4 +1,4 @@
-INSERT INTO GENRES (ID, NAME)
+INSERT INTO GENRES (GENRE_ID, GENRE_NAME)
 VALUES
 (1, 'Детектив'),
 (2, 'Мистика'),
@@ -6,14 +6,14 @@ VALUES
 (4, 'Фентези'),
 (5, 'Образовательное');
 
-INSERT INTO AUTHORS (ID, NAME)
+INSERT INTO AUTHORS (AUTHOR_ID, AUTHOR_NAME)
 VALUES
 (1, 'Агата Кристи'),
 (2, 'Роберт Мартин'),
 (3, 'Джон Толкин'),
 (4, 'Говард Лавкрафт');
 
-INSERT INTO BOOKS (ID, NAME, AUTHOR_ID, GENRE_ID)
+INSERT INTO BOOKS (BOOK_ID, BOOK_NAME, AUTHOR_ID, GENRE_ID)
 VALUES
 (1, 'Пуаро', 1, 1),
 (2, 'Чистый код', 2, 5),

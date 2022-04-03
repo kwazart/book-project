@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface BookDao {
     Book findById(long id);
-    Book findByBookName(String name);
-    List<Book> findByAuthorId(long authorId);
-    List<Book> findByGenreId(long genreId);
+    List<Book> findByBookName(String name);
+    List<Book> findByAuthorName(String authorName);
+    List<Book> findByGenreName(String genreName);
     List<Book> findAll();
     int insert(Book author);
     int update(Book author);

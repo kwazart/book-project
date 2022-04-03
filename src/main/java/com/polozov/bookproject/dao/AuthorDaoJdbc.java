@@ -17,7 +17,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     @Override
     public Author findById(long id) {
         return namedJdbc.queryForObject(
-                "select id, name from authors where id = :id",
+                "select author_id, author_name from authors where author_id = :id",
                 Map.of("id", id),
                 new AuthorMapper());
     }
@@ -25,7 +25,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     @Override
     public Author findByName(String name) {
         return namedJdbc.queryForObject(
-                "select id, name from authors where name = :name",
+                "select author_id, author_name from authors where author_name = :name",
                 Map.of("name", name),
                 new AuthorMapper());
     }
@@ -33,26 +33,26 @@ public class AuthorDaoJdbc implements AuthorDao {
     @Override
     public List<Author> findAll() {
         return namedJdbc.getJdbcOperations().query(
-                "select id, name from authors",
+                "select author_id, author_name from authors",
                 new AuthorMapper());
     }
 
     @Override
     public int insert(Author author) {
-        return namedJdbc.update("insert into authors (name) values (:name)",
+        return namedJdbc.update("insert into authors (author_name) values (:name)",
                 Map.of("name", author.getName()));
 
     }
 
     @Override
     public int update(Author author) {
-        return namedJdbc.update("update authors set name = :name where id = :id",
+        return namedJdbc.update("update authors set author_name = :name where author_id = :id",
                 Map.of("id", author.getId(),
                         "name", author.getName()));
     }
 
     @Override
     public int deleteById(long id) {
-        return namedJdbc.update("delete from authors where id = :id", Map.of("id", id));
+        return namedJdbc.update("delete from authors where author_id = :id", Map.of("id", id));
     }
 }

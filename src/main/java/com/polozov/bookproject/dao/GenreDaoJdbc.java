@@ -17,7 +17,7 @@ public class GenreDaoJdbc implements GenreDao {
     @Override
     public Genre findById(long id) {
         return namedJdbc.queryForObject(
-                "select id, name from genres where id = :id",
+                "select genre_id, genre_name from genres where genre_id = :id",
                 Map.of("id", id),
                 new GenreMapper());
     }
@@ -25,7 +25,7 @@ public class GenreDaoJdbc implements GenreDao {
     @Override
     public Genre findByName(String name) {
         return namedJdbc.queryForObject(
-                "select id, name from genres where name = :name",
+                "select genre_id, genre_name from genres where genre_name = :name",
                 Map.of("name", name),
                 new GenreMapper());
     }
@@ -33,25 +33,25 @@ public class GenreDaoJdbc implements GenreDao {
     @Override
     public List<Genre> findAll() {
         return namedJdbc.getJdbcOperations().query(
-                "select id, name from genres",
+                "select genre_id, genre_name from genres",
                 new GenreMapper());
     }
 
     @Override
     public int insert(Genre genre) {
-        return namedJdbc.update("insert into genres (name) values (:name)",
+        return namedJdbc.update("insert into genres (genre_name) values (:name)",
                 Map.of("name", genre.getName()));
     }
 
     @Override
     public int update(Genre genre) {
-        return namedJdbc.update("update genres set name = :name where id = :id",
+        return namedJdbc.update("update genres set genre_name = :name where genre_id = :id",
                 Map.of("id", genre.getId(),
                         "name", genre.getName()));
     }
 
     @Override
     public int deleteById(long id) {
-        return namedJdbc.update("delete from genres where id = :id", Map.of("id", id));
+        return namedJdbc.update("delete from genres where genre_id = :id", Map.of("id", id));
     }
 }

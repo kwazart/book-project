@@ -23,20 +23,18 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book getByName(String name) {
+    public List<Book> getByName(String name) {
         return dao.findByBookName(name);
     }
 
     @Override
-    public List<Book> getByAuthorName(String name) {
-        Author author = authorService.getByName(name);
-        return dao.findByAuthorId(author.getId());
+    public List<Book> getByAuthorName(String authorName) {
+        return dao.findByAuthorName(authorName);
     }
 
     @Override
-    public List<Book> getByGenreName(String name) {
-        Genre genre = genreService.getByName(name);
-        return dao.findByGenreId(genre.getId());
+    public List<Book> getByGenreName(String genreName) {
+        return dao.findByGenreName(genreName);
     }
 
     @Override
@@ -46,12 +44,27 @@ public class BookServiceImpl implements BookService{
 
     @Override
     public int add(Book book) {
-        return dao.insert(book);
+        String authorName = book.getAuthor().getName();
+        String genreName = book.getGenre().getName();
+        Author author = authorService.getByName(authorName);
+        Genre genre = genreService.getByName(genreName);
+        if (author == null || genre == null) {
+            return 0;
+        }
+
+        return dao.insert(new Book(book.getId(), book.getName(), author, genre));
     }
 
     @Override
     public int update(Book book) {
-        return dao.update(book);
+        String authorName = book.getAuthor().getName();
+        String genreName = book.getGenre().getName();
+        Author author = authorService.getByName(authorName);
+        Genre genre = genreService.getByName(genreName);
+        if (author == null || genre == null) {
+            return 0;
+        }
+        return dao.update(new Book(book.getId(), book.getName(), author, genre));
     }
 
     @Override

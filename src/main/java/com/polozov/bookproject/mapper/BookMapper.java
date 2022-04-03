@@ -1,6 +1,8 @@
 package com.polozov.bookproject.mapper;
 
+import com.polozov.bookproject.domain.Author;
 import com.polozov.bookproject.domain.Book;
+import com.polozov.bookproject.domain.Genre;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
@@ -13,6 +15,6 @@ public class BookMapper implements RowMapper<Book> {
         String name = rs.getString("name");
         long authorId = rs.getLong("author_id");
         long genreId = rs.getLong("genre_id");
-        return new Book(id, name, authorId, genreId);
+        return new Book(id, name, new Author(authorId, ""), new Genre(genreId, ""));
     }
 }

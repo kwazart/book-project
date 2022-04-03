@@ -18,17 +18,17 @@ public class GenreShell {
 
     @ShellMethod(value = "Find genre by id", key = {"find-genre-id", "fgi"})
     public void findGenreById(@ShellOption long id) {
-        printer.printObject(service.getById(id));
+        printer.printGenre(service.getById(id));
     }
 
     @ShellMethod(value = "Find genre by name", key = {"find-genre-name", "fgn"})
     public void findGenreByName(@ShellOption String name) {
-        printer.printObject(service.getByName(name));
+        printer.printGenre(service.getByName(name));
     }
 
     @ShellMethod(value = "Find all genres", key = {"find-all-genres", "fag"})
     public void findAllGenres() {
-        printer.printObjectList(service.getAll());
+        printer.printGenreList(service.getAll());
     }
 
     @ShellMethod(value = "Add genre to repository", key = {"add-genre", "ag"})

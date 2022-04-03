@@ -17,17 +17,17 @@ public class AuthorShell {
 
     @ShellMethod(value = "Find author by id", key = {"find-author-id", "fai"})
     public void findAuthorById(@ShellOption long id) {
-        printer.printObject(service.getById(id));
+        printer.printAuthor(service.getById(id));
     }
 
     @ShellMethod(value = "Find author by name", key = {"find-author-name", "fan"})
     public void findAuthorByName(@ShellOption String name) {
-        printer.printObject(service.getByName(name));
+        printer.printAuthor(service.getByName(name));
     }
 
     @ShellMethod(value = "Find all authors", key = {"find-all-authors", "faa"})
     public void findAllAuthors() {
-        printer.printObjectList(service.getAll());
+        printer.printAuthorList(service.getAll());
     }
 
     @ShellMethod(value = "Add author to repository", key = {"add-author", "aa"})
