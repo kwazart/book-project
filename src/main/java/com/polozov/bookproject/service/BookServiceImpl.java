@@ -4,6 +4,7 @@ import com.polozov.bookproject.dao.BookDao;
 import com.polozov.bookproject.domain.Author;
 import com.polozov.bookproject.domain.Book;
 import com.polozov.bookproject.domain.Genre;
+import com.polozov.bookproject.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,16 +44,14 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public int add(Book book) {
-        String authorName = book.getAuthor().getName();
-        String genreName = book.getGenre().getName();
+    public int add(String bookName, String authorName, String genreName) {
         Author author = authorService.getByName(authorName);
         Genre genre = genreService.getByName(genreName);
         if (author == null || genre == null) {
-            return 0;
+            throw new ObjectNotFoundException("Object not found");
         }
 
-        return dao.insert(new Book(book.getId(), book.getName(), author, genre));
+        return dao.insert(new Book(0, bookName, author, genre));
     }
 
     @Override
@@ -62,7 +61,7 @@ public class BookServiceImpl implements BookService{
         Author author = authorService.getByName(authorName);
         Genre genre = genreService.getByName(genreName);
         if (author == null || genre == null) {
-            return 0;
+            throw new ObjectNotFoundException("Object not found");
         }
         return dao.update(new Book(book.getId(), book.getName(), author, genre));
     }

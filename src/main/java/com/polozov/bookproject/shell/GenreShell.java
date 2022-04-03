@@ -1,9 +1,8 @@
 package com.polozov.bookproject.shell;
 
-import com.polozov.bookproject.domain.Author;
 import com.polozov.bookproject.domain.Genre;
 import com.polozov.bookproject.service.GenreService;
-import com.polozov.bookproject.util.PrinterUtil;
+import com.polozov.bookproject.util.DataPrinter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -14,21 +13,22 @@ import org.springframework.shell.standard.ShellOption;
 public class GenreShell {
 
     private final GenreService service;
-    private final PrinterUtil printer;
+    private final DataPrinter printer;
+    private static final String STRING_ROW_TEMPLATE = "%d - %s";
 
     @ShellMethod(value = "Find genre by id", key = {"find-genre-id", "fgi"})
     public void findGenreById(@ShellOption long id) {
-        printer.printGenre(service.getById(id));
+        printer.printLine(convertObjectStringView(service.getById(id)));
     }
 
     @ShellMethod(value = "Find genre by name", key = {"find-genre-name", "fgn"})
     public void findGenreByName(@ShellOption String name) {
-        printer.printGenre(service.getByName(name));
+        printer.printLine(convertObjectStringView(service.getByName(name)));
     }
 
     @ShellMethod(value = "Find all genres", key = {"find-all-genres", "fag"})
     public void findAllGenres() {
-        printer.printGenreList(service.getAll());
+        service.getAll().forEach(g -> printer.printLine(convertObjectStringView(g)));
     }
 
     @ShellMethod(value = "Add genre to repository", key = {"add-genre", "ag"})
@@ -48,5 +48,11 @@ public class GenreShell {
     public String deleteAuthor(@ShellOption long id) {
         int rows = service.deleteById(id);
         return String.format("Изменено (%s) строк(a)", rows);
+    }
+
+    private String convertObjectStringView(Genre genre) {
+        return String.format(STRING_ROW_TEMPLATE,
+                genre.getId(),
+                genre.getName());
     }
 }

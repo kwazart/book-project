@@ -10,7 +10,7 @@ public interface BookService {
     List<Book> getByAuthorName(String name);
     List<Book> getByGenreName(String name);
     List<Book> getAll();
-    int add(Book book);
+    int add(String bookName, String authorName, String genreName);
     int update(Book book);
     int deleteById(long id);
 }

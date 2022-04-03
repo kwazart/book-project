@@ -4,9 +4,8 @@ import com.polozov.bookproject.domain.Author;
 import com.polozov.bookproject.domain.Book;
 import com.polozov.bookproject.domain.Genre;
 import com.polozov.bookproject.service.BookService;
-import com.polozov.bookproject.util.PrinterUtil;
+import com.polozov.bookproject.util.DataPrinter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
@@ -16,38 +15,40 @@ import org.springframework.shell.standard.ShellOption;
 public class BookShell {
 
     private final BookService service;
-    private final PrinterUtil printer;
+    private final DataPrinter printer;
+    private static final String STRING_ROW_TEMPLATE = "%d - %s - %s - %s";
 
     @ShellMethod(value = "Find book by id", key = {"find-book-id", "fbi"})
     public void findBookById(@ShellOption long id) {
-        printer.printBook(service.getById(id));
+        Book book = service.getById(id);
+        printer.printLine(convertObjectStringView(book));
     }
 
     @ShellMethod(value = "Find books by name", key = {"find-book-name", "fbn"})
     public void findBookByName(@ShellOption String name) {
-        printer.printBookList(service.getByName(name));
+        service.getByName(name).forEach(b -> printer.printLine(convertObjectStringView(b)));
     }
 
     @ShellMethod(value = "Find book by author name", key = {"find-book-author", "fba"})
     public void findBookByAuthorName(@ShellOption String authorName) {
-        printer.printBookList(service.getByAuthorName(authorName));
+        service.getByAuthorName(authorName).forEach(b -> printer.printLine(convertObjectStringView(b)));
     }
 
     @ShellMethod(value = "Find book by genre name", key = {"find-book-genre", "fbg"})
     public void findBookByGenreName(@ShellOption String genreName) {
-        printer.printBookList(service.getByGenreName(genreName));
+        service.getByGenreName(genreName).forEach(b -> printer.printLine(convertObjectStringView(b)));
     }
 
     @ShellMethod(value = "Find all book", key = {"find-all-books", "fab"})
     public void findAllBooks() {
-        printer.printBookList(service.getAll());
+        service.getAll().forEach(b -> printer.printLine(convertObjectStringView(b)));
     }
 
     @ShellMethod(value = "Add book to repository", key = {"add-book", "ab"})
     public String addBook(@ShellOption String name,
                           @ShellOption String author,
                           @ShellOption String genre) {
-        int rows = service.add(new Book(0, name, new Author(0, author), new Genre(0, genre)));
+        int rows = service.add(name, author, genre);
         return String.format("Изменено %s строк", rows);
     }
 
@@ -64,5 +65,13 @@ public class BookShell {
     public String deleteBook(@ShellOption long id) {
         int rows = service.deleteById(id);
         return String.format("Изменено (%s) строк(a)", rows);
+    }
+
+    private String convertObjectStringView(Book book) {
+        return String.format(STRING_ROW_TEMPLATE,
+                book.getId(),
+                book.getName(),
+                book.getAuthor().getName(),
+                book.getGenre().getName());
     }
 }
