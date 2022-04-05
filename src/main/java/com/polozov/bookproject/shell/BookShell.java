@@ -1,14 +1,15 @@
 package com.polozov.bookproject.shell;
 
-import com.polozov.bookproject.domain.Author;
 import com.polozov.bookproject.domain.Book;
-import com.polozov.bookproject.domain.Genre;
 import com.polozov.bookproject.service.BookService;
 import com.polozov.bookproject.util.DataPrinter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @ShellComponent
@@ -20,8 +21,8 @@ public class BookShell {
 
     @ShellMethod(value = "Find book by id", key = {"find-book-id", "fbi"})
     public void findBookById(@ShellOption long id) {
-        Book book = service.getById(id);
-        printer.printLine(convertObjectStringView(book));
+        Optional<Book> optionalBook = service.getById(id);
+        optionalBook.ifPresent(book -> printer.printLine(convertObjectStringView(book)));
     }
 
     @ShellMethod(value = "Find books by name", key = {"find-book-name", "fbn"})
@@ -41,15 +42,16 @@ public class BookShell {
 
     @ShellMethod(value = "Find all book", key = {"find-all-books", "fab"})
     public void findAllBooks() {
-        service.getAll().forEach(b -> printer.printLine(convertObjectStringView(b)));
+        List<Book> books = service.getAll();
+        books.forEach(b -> printer.printLine(convertObjectStringView(b)));
     }
 
     @ShellMethod(value = "Add book to repository", key = {"add-book", "ab"})
     public String addBook(@ShellOption String name,
                           @ShellOption String author,
                           @ShellOption String genre) {
-        int rows = service.add(name, author, genre);
-        return String.format("Изменено %s строк", rows);
+        service.add(name, author, genre);
+        return "Успешно";
     }
 
     @ShellMethod(value = "Update book by id", key = {"update-book", "ub"})
@@ -57,7 +59,7 @@ public class BookShell {
                              @ShellOption String name,
                              @ShellOption String author,
                              @ShellOption String genre) {
-        int rows = service.update(new Book(id, name, new Author(0, author), new Genre(0, genre)));
+        int rows = service.update(id, name, author, genre);
         return String.format("Изменено %s строк", rows);
     }
 

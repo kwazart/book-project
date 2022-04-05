@@ -8,6 +8,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
+import java.util.Optional;
+
 @ShellComponent
 @RequiredArgsConstructor
 public class AuthorShell {
@@ -18,7 +20,8 @@ public class AuthorShell {
 
     @ShellMethod(value = "Find author by id", key = {"find-author-id", "fai"})
     public void findAuthorById(@ShellOption long id) {
-        printer.printLine(convertObjectStringView(service.getById(id)));
+        Optional<Author> authorOptional = service.getById(id);
+        authorOptional.ifPresent(author -> printer.printLine(convertObjectStringView(author)));
     }
 
     @ShellMethod(value = "Find author by name", key = {"find-author-name", "fan"})
@@ -33,14 +36,14 @@ public class AuthorShell {
 
     @ShellMethod(value = "Add author to repository", key = {"add-author", "aa"})
     public String addAuthor(@ShellOption String name) {
-        int rows = service.add(new Author(0, name));
-        return String.format("Изменено %s строк", rows);
+        service.add(name);
+        return "Успешно";
     }
 
     @ShellMethod(value = "Update author by id", key = {"update-author", "ua"})
     public String updateAuthor(@ShellOption long id,
                              @ShellOption String name) {
-        int rows = service.update(new Author(id, name));
+        int rows = service.update(id, name);
         return String.format("Изменено %s строк", rows);
     }
 
