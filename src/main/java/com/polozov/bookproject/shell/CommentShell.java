@@ -29,11 +29,6 @@ public class CommentShell {
         service.getByBookId(bookId).forEach(c -> printer.printLine(convertObjectStringView(c)));
     }
 
-    @ShellMethod(value = "Find all comments ", key = {"find-all-comment", "fac"})
-    public void findAllComment() {
-        service.getAll().forEach(c -> printer.printLine(convertObjectStringView(c)));
-    }
-
     @ShellMethod(value = "Add comment to repository", key = {"add-comment", "ac"})
     public String addComment(@ShellOption long bookId,
                              @ShellOption String text) {

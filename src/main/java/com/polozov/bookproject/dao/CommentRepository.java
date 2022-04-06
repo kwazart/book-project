@@ -9,7 +9,6 @@ import java.util.Optional;
 public interface CommentRepository {
     Optional<Comment> findById(long id);
     List<Comment> findByBook(Book book);
-    List<Comment> findAll();
     Comment save(Comment comment);
     int update(long id, String text, Book book);
     int deleteById(long id);

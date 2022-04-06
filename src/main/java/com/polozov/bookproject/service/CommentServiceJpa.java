@@ -31,11 +31,6 @@ public class CommentServiceJpa implements CommentService {
     }
 
     @Override
-    public List<Comment> getAll() {
-        return repository.findAll();
-    }
-
-    @Override
     public Comment add(String text, long bookId) {
         Optional<Book> bookOptional = bookRepository.findById(bookId);
         if (bookOptional.isEmpty()) {

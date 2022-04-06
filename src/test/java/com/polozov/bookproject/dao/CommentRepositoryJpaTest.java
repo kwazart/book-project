@@ -60,12 +60,6 @@ class CommentRepositoryJpaTest {
         assertThat(comments.size()).isEqualTo(COUNT_OF_ROWS);
     }
 
-    @DisplayName("возвращать ожидаемый список объектов из БД")
-    @Test
-    void shouldReturnExpectedObjectList() {
-        List<Comment> comments = repository.findAll();
-        assertThat(comments.size()).isEqualTo(COUNT_OF_ROWS);
-    }
 
     @DisplayName("добавлять корректно новый объект")
     @Test
@@ -76,9 +70,9 @@ class CommentRepositoryJpaTest {
                 new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME));
 
         var expectedComment = new Comment(0, NEW_COMMENT_TEXT, book);
-        List<Comment> beginList = repository.findAll();
+        List<Comment> beginList = repository.findByBook(book);
         repository.save(expectedComment);
-        List<Comment> endList = repository.findAll();
+        List<Comment> endList = repository.findByBook(book);
 
         var foundCommentOptional = repository.findById(expectedComment.getId());
         assertThat(foundCommentOptional).isPresent().get().isEqualTo(expectedComment);
@@ -105,9 +99,14 @@ class CommentRepositoryJpaTest {
     @DisplayName("удалять объект по id")
     @Test
     void shouldCorrectDeleteObjectFromDbById() {
-        List<Comment> beginList = repository.findAll();
+        Book book = new Book(EXPECTED_BOOK_ID,
+                EXPECTED_BOOK_NAME,
+                new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME),
+                new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME));
+
+        List<Comment> beginList = repository.findByBook(book);
         repository.deleteById(EXPECTED_COMMENT_ID);
-        List<Comment> endList = repository.findAll();
+        List<Comment> endList = repository.findByBook(book);
 
         assertThat(beginList.size()).isEqualTo(endList.size() + 1);
 

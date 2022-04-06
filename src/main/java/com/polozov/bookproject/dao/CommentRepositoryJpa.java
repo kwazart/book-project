@@ -7,7 +7,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -20,10 +22,9 @@ public class CommentRepositoryJpa implements CommentRepository {
     @Override
     public Optional<Comment> findById(long id) {
         EntityGraph<?> entityGraph = em.getEntityGraph("books-entity-graph");
-        TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.id = :id", Comment.class);
-        query.setParameter("id", id);
-        query.setHint("javax.persistence.fetchgraph", entityGraph);
-        return Optional.ofNullable(query.getSingleResult());
+        Map<String, Object> properties = new HashMap<>();
+        properties.put("javax.persistence.fetchgraph", entityGraph);
+        return Optional.ofNullable(em.find(Comment.class, id, properties));
     }
 
     @Override
@@ -31,14 +32,6 @@ public class CommentRepositoryJpa implements CommentRepository {
         EntityGraph<?> entityGraph = em.getEntityGraph("books-entity-graph");
         TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.book = :book", Comment.class);
         query.setParameter("book", book);
-        query.setHint("javax.persistence.fetchgraph", entityGraph);
-        return query.getResultList();
-    }
-
-    @Override
-    public List<Comment> findAll() {
-        EntityGraph<?> entityGraph = em.getEntityGraph("books-entity-graph");
-        TypedQuery<Comment> query = em.createQuery("select c from Comment c", Comment.class);
         query.setHint("javax.persistence.fetchgraph", entityGraph);
         return query.getResultList();
     }
