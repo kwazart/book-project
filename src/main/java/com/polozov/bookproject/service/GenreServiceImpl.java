@@ -1,20 +1,22 @@
 package com.polozov.bookproject.service;
 
-import com.polozov.bookproject.dao.GenreDao;
+import com.polozov.bookproject.dao.GenreRepository;
 import com.polozov.bookproject.domain.Genre;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
-    private final GenreDao dao;
+    private final GenreRepository dao;
 
     @Override
-    public Genre getById(long id) {
+    public Optional<Genre> getById(long id) {
         return dao.findById(id);
     }
 
@@ -28,16 +30,19 @@ public class GenreServiceImpl implements GenreService {
         return dao.findAll();
     }
 
+    @Transactional
     @Override
-    public int add(Genre genre) {
-        return dao.insert(genre);
+    public Genre add(String name) {
+        return dao.save(new Genre(0, name));
     }
 
+    @Transactional
     @Override
-    public int update(Genre genre) {
-        return dao.update(genre);
+    public int update(long id, String genreName) {
+        return dao.update(id, genreName);
     }
 
+    @Transactional
     @Override
     public int deleteById(long id) {
         return dao.deleteById(id);

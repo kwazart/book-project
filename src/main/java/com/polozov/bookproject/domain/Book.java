@@ -1,14 +1,38 @@
 package com.polozov.bookproject.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
+import javax.persistence.*;
+import java.util.List;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Data
+@Table(name = "books")
+@NamedEntityGraph(name = "authors-genres-entity-graph", attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
+
 public class Book {
-    private final long id;
-    private final String name;
-    private final Author author;
-    private final Genre genre;
+
+    @Id
+    @Column(name = "book_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "book_name")
+    private String name;
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "author_fk"))
+    private Author author;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "genre_id", foreignKey = @ForeignKey(name = "genre_fk"))
+    private Genre genre;
+
+
 }
 

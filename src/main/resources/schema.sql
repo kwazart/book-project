@@ -19,3 +19,11 @@ CREATE TABLE BOOKS (
     foreign key (AUTHOR_ID) references AUTHORS(AUTHOR_ID),
     foreign key (GENRE_ID) references GENRES(GENRE_ID)
 );
+
+DROP TABLE IF EXISTS COMMENTS;
+CREATE TABLE COMMENTS (
+    COMMENT_ID BIGINT auto_increment PRIMARY KEY,
+    COMMENT_TEXT VARCHAR(255),
+    BOOK_ID BIGINT,
+    foreign key (BOOK_ID) references BOOKS(BOOK_ID)
+);

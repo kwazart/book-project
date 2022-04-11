@@ -8,6 +8,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 
+import java.util.Optional;
+
 @ShellComponent
 @RequiredArgsConstructor
 public class GenreShell {
@@ -18,7 +20,8 @@ public class GenreShell {
 
     @ShellMethod(value = "Find genre by id", key = {"find-genre-id", "fgi"})
     public void findGenreById(@ShellOption long id) {
-        printer.printLine(convertObjectStringView(service.getById(id)));
+        Optional<Genre> genreOptional = service.getById(id);
+        genreOptional.ifPresent(genre -> printer.printLine(convertObjectStringView(genre)));
     }
 
     @ShellMethod(value = "Find genre by name", key = {"find-genre-name", "fgn"})
@@ -33,14 +36,14 @@ public class GenreShell {
 
     @ShellMethod(value = "Add genre to repository", key = {"add-genre", "ag"})
     public String addGenre(@ShellOption String name) {
-        int rows = service.add(new Genre(0, name));
-        return String.format("Изменено %s строк", rows);
+        service.add(name);
+        return "Успешно";
     }
 
     @ShellMethod(value = "Update genre by id", key = {"update-genre", "ug"})
     public String updateGenre(@ShellOption long id,
                                @ShellOption String name) {
-        int rows = service.update(new Genre(id, name));
+        int rows = service.update(id, name);
         return String.format("Изменено %s строк", rows);
     }
 

@@ -1,11 +1,23 @@
 package com.polozov.bookproject.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
-@RequiredArgsConstructor
+import javax.persistence.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Data
+@Table(name = "genres")
 public class Genre {
-    private final long id;
-    private final String name;
+
+    @Id
+    @Column(name = "genre_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "genre_name")
+    private String name;
 }

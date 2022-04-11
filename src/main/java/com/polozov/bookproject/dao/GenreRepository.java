@@ -3,12 +3,13 @@ package com.polozov.bookproject.dao;
 import com.polozov.bookproject.domain.Genre;
 
 import java.util.List;
+import java.util.Optional;
 
-public interface GenreDao {
-    Genre findById(long id);
+public interface GenreRepository {
+    Optional<Genre> findById(long id);
     Genre findByName(String name);
     List<Genre> findAll();
-    int insert(Genre author);
-    int update(Genre author);
+    Genre save(Genre genre);
+    int update(long id, String name);
     int deleteById(long id);
 }

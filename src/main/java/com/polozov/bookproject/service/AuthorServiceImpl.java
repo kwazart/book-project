@@ -1,45 +1,50 @@
 package com.polozov.bookproject.service;
 
-import com.polozov.bookproject.dao.AuthorDao;
+import com.polozov.bookproject.dao.AuthorRepository;
 import com.polozov.bookproject.domain.Author;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorDao dao;
+    private final AuthorRepository repository;
 
     @Override
-    public Author getById(long id) {
-        return dao.findById(id);
+    public Optional<Author> getById(long id) {
+        return repository.findById(id);
     }
 
     @Override
     public Author getByName(String name) {
-        return dao.findByName(name);
+        return repository.findByName(name);
     }
 
     @Override
     public List<Author> getAll() {
-        return dao.findAll();
+        return repository.findAll();
     }
 
+    @Transactional
     @Override
-    public int add(Author author) {
-        return dao.insert(author);
+    public Author add(String name) {
+        return repository.save(new Author(0, name));
     }
 
+    @Transactional
     @Override
-    public int update(Author author) {
-        return dao.update(author);
+    public int update(long id, String authorName) {
+        return repository.update(id, authorName);
     }
 
+    @Transactional
     @Override
     public int deleteById(long id) {
-        return dao.deleteById(id);
+        return repository.deleteById(id);
     }
 }
