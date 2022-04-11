@@ -43,14 +43,14 @@ public class GenreShell {
     @ShellMethod(value = "Update genre by id", key = {"update-genre", "ug"})
     public String updateGenre(@ShellOption long id,
                                @ShellOption String name) {
-        int rows = service.update(id, name);
-        return String.format("Изменено %s строк", rows);
+        service.update(id, name);
+        return "Успешно";
     }
 
     @ShellMethod(value = "Delete genre by id", key = {"delete-genre", "dg"})
     public String deleteAuthor(@ShellOption long id) {
-        int rows = service.deleteById(id);
-        return String.format("Изменено (%s) строк(a)", rows);
+        service.deleteById(id);
+        return "Успешно";
     }
 
     private String convertObjectStringView(Genre genre) {

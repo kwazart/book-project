@@ -59,14 +59,14 @@ public class BookShell {
                              @ShellOption String name,
                              @ShellOption String author,
                              @ShellOption String genre) {
-        int rows = service.update(id, name, author, genre);
-        return String.format("Изменено %s строк", rows);
+        service.update(id, name, author, genre);
+        return "Успешно";
     }
 
     @ShellMethod(value = "Delete book by id", key = {"delete-book", "db"})
     public String deleteBook(@ShellOption long id) {
-        int rows = service.deleteById(id);
-        return String.format("Изменено (%s) строк(a)", rows);
+        service.deleteById(id);
+        return "Успешно";
     }
 
     private String convertObjectStringView(Book book) {

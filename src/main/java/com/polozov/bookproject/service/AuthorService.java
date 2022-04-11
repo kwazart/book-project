@@ -10,6 +10,6 @@ public interface AuthorService {
     Author getByName(String name);
     List<Author> getAll();
     Author add(String name);
-    int update(long id, String authorName);
-    int deleteById(long id);
+    Author update(long id, String authorName);
+    void deleteById(long id);
 }

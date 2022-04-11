@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +12,6 @@ import java.util.List;
 @Data
 @Table(name = "books")
 @NamedEntityGraph(name = "authors-genres-entity-graph", attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
-
 public class Book {
 
     @Id

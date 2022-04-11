@@ -9,6 +9,6 @@ public interface CommentService {
     Optional<Comment> getById(long id);
     List<Comment> getByBookId(long bookId);
     Comment add(String text, long bookId);
-    int update(long commentId, String text, long bookId);
-    int deleteById(long id);
+    Comment update(long commentId, String text, long bookId);
+    void deleteById(long id);
 }
