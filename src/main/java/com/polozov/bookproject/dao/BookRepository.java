@@ -12,15 +12,16 @@ import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
 
+    @EntityGraph(value = "authors-genres-entity-graph")
     @Query("select b from Book b where b.name = :name")
     List<Book> findByBookName(@Param("name") String name);
 
-    @Query("select b from Book b where b.author = :author")
-    List<Book> findByAuthorName(@Param("author") Author author);
-
-    @Query("select b from Book b where b.genre = :genre")
-    List<Book> findByGenreName(@Param("genre") Genre genre);
-
     @EntityGraph(value = "authors-genres-entity-graph")
     List<Book> findAll();
+
+    @EntityGraph(value = "authors-genres-entity-graph")
+    List<Book> findAllByGenreName(String name);
+
+    @EntityGraph(value = "authors-genres-entity-graph")
+    List<Book> findAllByAuthorName(String name);
 }

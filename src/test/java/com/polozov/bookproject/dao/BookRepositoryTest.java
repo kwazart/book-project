@@ -43,7 +43,7 @@ class BookRepositoryTest {
     @Test
     void shouldReturnExpectedObjectByAuthorName() {
         Author author = new Author(EXPECTED_AUTHOR_ID, EXPECTED_AUTHOR_NAME);
-        List<Book> books = repository.findByAuthorName(author);
+        List<Book> books = repository.findAllByAuthorName(EXPECTED_AUTHOR_NAME);
         assertThat(books.size()).isEqualTo(COUNT_OF_AUTHOR_ROWS);
         books.forEach(b -> assertThat(b.getAuthor()).isEqualTo(author));
     }
@@ -52,7 +52,7 @@ class BookRepositoryTest {
     @Test
     void shouldReturnExpectedObjectByGenreName() {
         Genre genre = new Genre(EXPECTED_GENRE_ID, EXPECTED_GENRE_NAME);
-        List<Book> books = repository.findByGenreName(genre);
+        List<Book> books = repository.findAllByGenreName(EXPECTED_GENRE_NAME);
         assertThat(books.size()).isEqualTo(COUNT_OF_GENRE_ROWS);
         books.forEach(b -> assertThat(b.getGenre()).isEqualTo(genre));
     }

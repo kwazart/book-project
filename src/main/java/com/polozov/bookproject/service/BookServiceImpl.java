@@ -34,21 +34,22 @@ public class BookServiceImpl implements BookService {
     @Transactional
     @Override
     public List<Book> getByAuthorName(String authorName) {
-        Author author = authorService.getByName(authorName);
-        if (author == null) {
-            throw new ObjectNotFoundException("Object not found");
-        }
-        return repository.findByAuthorName(author);
+//        Author author = authorService.getByName(authorName);
+//        if (author == null) {
+//            throw new ObjectNotFoundException("Object not found");
+//        }
+        return repository.findAllByAuthorName(authorName);
     }
 
     @Transactional
     @Override
     public List<Book> getByGenreName(String genreName) {
-        Genre genre = genreService.getByName(genreName);
-        if (genre == null) {
-            throw new ObjectNotFoundException("Object not found");
-        }
-        return repository.findByGenreName(genre);
+
+//        Genre genre = genreService.getByName(genreName);
+//        if (genre == null) {
+//            throw new ObjectNotFoundException("Object not found");
+//        }
+        return repository.findAllByGenreName(genreName);
     }
 
     @Transactional
