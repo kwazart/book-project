@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
 
     private final BookRepository repository;
     private final AuthorService authorService;
@@ -25,29 +25,34 @@ public class BookServiceImpl implements BookService{
         return repository.findById(id);
     }
 
+    @Transactional
     @Override
     public List<Book> getByName(String name) {
         return repository.findByBookName(name);
     }
 
+    @Transactional
     @Override
     public List<Book> getByAuthorName(String authorName) {
-        Author author = authorService.getByName(authorName);
-        if (author == null) {
-            throw new ObjectNotFoundException("Object not found");
-        }
-        return repository.findByAuthorName(author);
+//        Author author = authorService.getByName(authorName);
+//        if (author == null) {
+//            throw new ObjectNotFoundException("Object not found");
+//        }
+        return repository.findAllByAuthorName(authorName);
     }
 
+    @Transactional
     @Override
     public List<Book> getByGenreName(String genreName) {
-        Genre genre = genreService.getByName(genreName);
-        if (genre == null) {
-            throw new ObjectNotFoundException("Object not found");
-        }
-        return repository.findByGenreName(genre);
+
+//        Genre genre = genreService.getByName(genreName);
+//        if (genre == null) {
+//            throw new ObjectNotFoundException("Object not found");
+//        }
+        return repository.findAllByGenreName(genreName);
     }
 
+    @Transactional
     @Override
     public List<Book> getAll() {
         return repository.findAll();
@@ -67,18 +72,18 @@ public class BookServiceImpl implements BookService{
 
     @Transactional
     @Override
-    public int update(long id, String bookName, String authorName, String genreName) {
+    public Book update(long id, String bookName, String authorName, String genreName) {
         Author author = authorService.getByName(authorName);
         Genre genre = genreService.getByName(genreName);
         if (author == null || genre == null) {
             throw new ObjectNotFoundException("Object not found");
         }
-        return repository.update(new Book(id, bookName, author, genre));
+        return repository.save(new Book(id, bookName, author, genre));
     }
 
     @Transactional
     @Override
-    public int deleteById(long id) {
-        return repository.deleteById(id);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 }

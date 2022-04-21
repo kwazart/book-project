@@ -1,15 +1,12 @@
 package com.polozov.bookproject.dao;
 
 import com.polozov.bookproject.domain.Genre;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import java.util.List;
-import java.util.Optional;
+public interface GenreRepository extends JpaRepository<Genre, Long> {
 
-public interface GenreRepository {
-    Optional<Genre> findById(long id);
-    Genre findByName(String name);
-    List<Genre> findAll();
-    Genre save(Genre genre);
-    int update(long id, String name);
-    int deleteById(long id);
+    @Query("select g from Genre g where g.name = :name")
+    Genre findByName(@Param("name") String name);
 }

@@ -20,11 +20,13 @@ public class AuthorServiceImpl implements AuthorService {
         return repository.findById(id);
     }
 
+    @Transactional
     @Override
     public Author getByName(String name) {
         return repository.findByName(name);
     }
 
+    @Transactional
     @Override
     public List<Author> getAll() {
         return repository.findAll();
@@ -38,13 +40,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public int update(long id, String authorName) {
-        return repository.update(id, authorName);
+    public Author update(long id, String authorName) {
+        return repository.save(new Author(id, authorName));
     }
 
     @Transactional
     @Override
-    public int deleteById(long id) {
-        return repository.deleteById(id);
+    public void deleteById(long id) {
+        repository.deleteById(id);
     }
 }

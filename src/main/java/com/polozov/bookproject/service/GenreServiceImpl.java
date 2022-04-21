@@ -20,11 +20,13 @@ public class GenreServiceImpl implements GenreService {
         return dao.findById(id);
     }
 
+    @Transactional
     @Override
     public Genre getByName(String name) {
         return dao.findByName(name);
     }
 
+    @Transactional
     @Override
     public List<Genre> getAll() {
         return dao.findAll();
@@ -38,13 +40,13 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public int update(long id, String genreName) {
-        return dao.update(id, genreName);
+    public Genre update(long id, String genreName) {
+        return dao.save(new Genre(id, genreName));
     }
 
     @Transactional
     @Override
-    public int deleteById(long id) {
-        return dao.deleteById(id);
+    public void deleteById(long id) {
+        dao.deleteById(id);
     }
 }

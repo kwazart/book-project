@@ -10,6 +10,6 @@ public interface GenreService {
     Genre getByName(String name);
     List<Genre> getAll();
     Genre add(String name);
-    int update(long id, String genreName);
-    int deleteById(long id);
+    Genre update(long id, String genreName);
+    void deleteById(long id);
 }

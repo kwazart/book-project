@@ -40,14 +40,14 @@ public class CommentShell {
     public String updateComment(@ShellOption long id,
                                 @ShellOption String text,
                                 @ShellOption long bookId) {
-        int rows = service.update(id, text, bookId);
-        return String.format("Изменено %s строк", rows);
+        service.update(id, text, bookId);
+        return "Успешно";
     }
 
     @ShellMethod(value = "Delete comment by id", key = {"delete-comment", "dс"})
     public String deleteComment(@ShellOption long id) {
-        int rows = service.deleteById(id);
-        return String.format("Изменено (%s) строк(a)", rows);
+        service.deleteById(id);
+        return "Успешно";
     }
 
 

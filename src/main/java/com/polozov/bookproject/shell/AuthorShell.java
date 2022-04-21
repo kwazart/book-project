@@ -43,14 +43,14 @@ public class AuthorShell {
     @ShellMethod(value = "Update author by id", key = {"update-author", "ua"})
     public String updateAuthor(@ShellOption long id,
                              @ShellOption String name) {
-        int rows = service.update(id, name);
-        return String.format("Изменено %s строк", rows);
+        service.update(id, name);
+        return "Успешно";
     }
 
     @ShellMethod(value = "Delete author by id", key = {"delete-author", "da"})
     public String deleteAuthor(@ShellOption long id) {
-        int rows = service.deleteById(id);
-        return String.format("Изменено (%s) строк(a)", rows);
+        service.deleteById(id);
+        return "Успешно";
     }
 
     private String convertObjectStringView(Author author) {
