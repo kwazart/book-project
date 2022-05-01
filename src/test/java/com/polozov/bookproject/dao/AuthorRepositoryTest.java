@@ -1,25 +1,23 @@
 package com.polozov.bookproject.dao;
 
 import com.polozov.bookproject.domain.Author;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
-
-import java.util.List;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Dao для работы с Author должно")
-@DataJpaTest
-class AuthorRepositoryTest {
+class AuthorRepositoryTest extends AbstractRepositoryTest {
 
     private static final String EXPECTED_AUTHOR_NAME = "Агата Кристи";
-    private static final String NEW_AUTHOR_NAME = "Говард Лавкрафт";
-    private static final long EXPECTED_AUTHOR_ID = 1;
-    private static final long COUNT_OF_ROWS = 2;
+    private static final String EXPECTED_AUTHOR_ID = "10";
 
     @Autowired
     private AuthorRepository repository;

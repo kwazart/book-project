@@ -2,6 +2,7 @@ package com.polozov.bookproject.service;
 
 import com.polozov.bookproject.dao.GenreRepository;
 import com.polozov.bookproject.domain.Genre;
+import com.polozov.bookproject.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,40 +14,46 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GenreServiceImpl implements GenreService {
 
-    private final GenreRepository dao;
+    private final GenreRepository repository;
 
     @Override
-    public Optional<Genre> getById(long id) {
-        return dao.findById(id);
+    public Optional<Genre> getById(String id) {
+        return repository.findById(id);
     }
 
     @Transactional
     @Override
     public Genre getByName(String name) {
-        return dao.findByName(name);
+        return repository.findByName(name);
     }
 
     @Transactional
     @Override
     public List<Genre> getAll() {
-        return dao.findAll();
+        return repository.findAll();
     }
 
     @Transactional
     @Override
     public Genre add(String name) {
-        return dao.save(new Genre(0, name));
+        return repository.save(new Genre(name));
     }
 
     @Transactional
     @Override
-    public Genre update(long id, String genreName) {
-        return dao.save(new Genre(id, genreName));
+    public Genre update(String id, String genreName) {
+        Optional<Genre> genreOptional = repository.findById(id);
+        if (genreOptional.isEmpty()) {
+            throw new ObjectNotFoundException("Incorrect genre id ");
+        }
+        Genre genre = genreOptional.get();
+        genre.setName(genreName);
+        return repository.save(genre);
     }
 
     @Transactional
     @Override
-    public void deleteById(long id) {
-        dao.deleteById(id);
+    public void deleteById(String id) {
+        repository.deleteById(id);
     }
 }

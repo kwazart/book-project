@@ -16,10 +16,10 @@ public class GenreShell {
 
     private final GenreService service;
     private final DataPrinter printer;
-    private static final String STRING_ROW_TEMPLATE = "%d - %s";
+    private static final String STRING_ROW_TEMPLATE = "%s - %s";
 
     @ShellMethod(value = "Find genre by id", key = {"find-genre-id", "fgi"})
-    public void findGenreById(@ShellOption long id) {
+    public void findGenreById(@ShellOption String id) {
         Optional<Genre> genreOptional = service.getById(id);
         genreOptional.ifPresent(genre -> printer.printLine(convertObjectStringView(genre)));
     }
@@ -41,14 +41,14 @@ public class GenreShell {
     }
 
     @ShellMethod(value = "Update genre by id", key = {"update-genre", "ug"})
-    public String updateGenre(@ShellOption long id,
+    public String updateGenre(@ShellOption String id,
                                @ShellOption String name) {
         service.update(id, name);
         return "Успешно";
     }
 
     @ShellMethod(value = "Delete genre by id", key = {"delete-genre", "dg"})
-    public String deleteAuthor(@ShellOption long id) {
+    public String deleteAuthor(@ShellOption String id) {
         service.deleteById(id);
         return "Успешно";
     }

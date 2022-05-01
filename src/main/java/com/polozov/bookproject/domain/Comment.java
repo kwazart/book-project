@@ -3,27 +3,26 @@ package com.polozov.bookproject.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Data
-@Table(name = "comments")
-@NamedEntityGraph(name = "books-entity-graph", attributeNodes = {@NamedAttributeNode("book")})
+@Document(collection = "comments")
 public class Comment {
 
     @Id
-    @Column(name = "comment_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
-    @Column(name = "comment_text")
     private String text;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Book.class)
-    @JoinColumn(name = "book_id", foreignKey = @ForeignKey(name = "comment_fk"))
-    private Book book;
+    @Field(name = "book")
+    private String bookId;
+
+    public Comment(String text, String bookId) {
+        this.text = text;
+        this.bookId = bookId;
+    }
 }

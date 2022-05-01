@@ -21,35 +21,26 @@ public class BookServiceImpl implements BookService {
     private final GenreService genreService;
 
     @Override
-    public Optional<Book> getById(long id) {
+    public Optional<Book> getById(String id) {
         return repository.findById(id);
     }
 
     @Transactional
     @Override
     public List<Book> getByName(String name) {
-        return repository.findByBookName(name);
+        return repository.findAllByName(name);
     }
 
     @Transactional
     @Override
     public List<Book> getByAuthorName(String authorName) {
-//        Author author = authorService.getByName(authorName);
-//        if (author == null) {
-//            throw new ObjectNotFoundException("Object not found");
-//        }
-        return repository.findAllByAuthorName(authorName);
+        return repository.findAllByAuthor(authorName);
     }
 
     @Transactional
     @Override
     public List<Book> getByGenreName(String genreName) {
-
-//        Genre genre = genreService.getByName(genreName);
-//        if (genre == null) {
-//            throw new ObjectNotFoundException("Object not found");
-//        }
-        return repository.findAllByGenreName(genreName);
+        return repository.findAllByGenre(genreName);
     }
 
     @Transactional
@@ -67,23 +58,23 @@ public class BookServiceImpl implements BookService {
             throw new ObjectNotFoundException("Object not found");
         }
 
-        return repository.save(new Book(0, bookName, author, genre));
+        return repository.save(new Book(bookName, author.getName(), genre.getName()));
     }
 
     @Transactional
     @Override
-    public Book update(long id, String bookName, String authorName, String genreName) {
+    public Book update(String id, String bookName, String authorName, String genreName) {
         Author author = authorService.getByName(authorName);
         Genre genre = genreService.getByName(genreName);
         if (author == null || genre == null) {
             throw new ObjectNotFoundException("Object not found");
         }
-        return repository.save(new Book(id, bookName, author, genre));
+        return repository.save(new Book(id, bookName, author.getName(), genre.getName()));
     }
 
     @Transactional
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 }

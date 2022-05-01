@@ -2,16 +2,11 @@ package com.polozov.bookproject.dao;
 
 import com.polozov.bookproject.domain.Book;
 import com.polozov.bookproject.domain.Comment;
-import org.springframework.data.jpa.repository.EntityGraph;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentRepository extends MongoRepository<Comment, String> {
 
-    @EntityGraph(value = "books-entity-graph")
-    @Query("select c from Comment c where c.book = :book")
-    List<Comment> findByBook(@Param("book") Book book);
+    List<Comment> findAllByBookId(String book);
 }

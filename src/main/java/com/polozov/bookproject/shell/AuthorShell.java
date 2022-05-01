@@ -16,10 +16,10 @@ public class AuthorShell {
 
     private final AuthorService service;
     private final DataPrinter printer;
-    private static final String STRING_ROW_TEMPLATE = "%d - %s";
+    private static final String STRING_ROW_TEMPLATE = "%s - %s";
 
     @ShellMethod(value = "Find author by id", key = {"find-author-id", "fai"})
-    public void findAuthorById(@ShellOption long id) {
+    public void findAuthorById(@ShellOption String id) {
         Optional<Author> authorOptional = service.getById(id);
         authorOptional.ifPresent(author -> printer.printLine(convertObjectStringView(author)));
     }
@@ -41,14 +41,14 @@ public class AuthorShell {
     }
 
     @ShellMethod(value = "Update author by id", key = {"update-author", "ua"})
-    public String updateAuthor(@ShellOption long id,
+    public String updateAuthor(@ShellOption String id,
                              @ShellOption String name) {
         service.update(id, name);
         return "Успешно";
     }
 
     @ShellMethod(value = "Delete author by id", key = {"delete-author", "da"})
-    public String deleteAuthor(@ShellOption long id) {
+    public String deleteAuthor(@ShellOption String id) {
         service.deleteById(id);
         return "Успешно";
     }
