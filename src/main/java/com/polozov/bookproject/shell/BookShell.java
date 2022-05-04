@@ -17,10 +17,10 @@ public class BookShell {
 
     private final BookService service;
     private final DataPrinter printer;
-    private static final String STRING_ROW_TEMPLATE = "%d - %s - %s - %s";
+    private static final String STRING_ROW_TEMPLATE = "%s - %s - %s - %s";
 
     @ShellMethod(value = "Find book by id", key = {"find-book-id", "fbi"})
-    public void findBookById(@ShellOption long id) {
+    public void findBookById(@ShellOption String id) {
         Optional<Book> optionalBook = service.getById(id);
         optionalBook.ifPresent(book -> printer.printLine(convertObjectStringView(book)));
     }
@@ -55,7 +55,7 @@ public class BookShell {
     }
 
     @ShellMethod(value = "Update book by id", key = {"update-book", "ub"})
-    public String updateBook(@ShellOption long id,
+    public String updateBook(@ShellOption String id,
                              @ShellOption String name,
                              @ShellOption String author,
                              @ShellOption String genre) {
@@ -64,7 +64,7 @@ public class BookShell {
     }
 
     @ShellMethod(value = "Delete book by id", key = {"delete-book", "db"})
-    public String deleteBook(@ShellOption long id) {
+    public String deleteBook(@ShellOption String id) {
         service.deleteById(id);
         return "Успешно";
     }
@@ -73,7 +73,7 @@ public class BookShell {
         return String.format(STRING_ROW_TEMPLATE,
                 book.getId(),
                 book.getName(),
-                book.getAuthor().getName(),
-                book.getGenre().getName());
+                book.getAuthor(),
+                book.getGenre());
     }
 }

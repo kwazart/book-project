@@ -3,21 +3,21 @@ package com.polozov.bookproject.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Data
-@Table(name = "genres")
+@Document(collection= "genres")
 public class Genre {
 
     @Id
-    @Column(name = "genre_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @Column(name = "genre_name")
+    private String id;
     private String name;
+
+    public Genre(String name) {
+        this.name = name;
+    }
 }

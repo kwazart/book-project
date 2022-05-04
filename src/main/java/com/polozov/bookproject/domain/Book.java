@@ -3,34 +3,29 @@ package com.polozov.bookproject.domain;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
 @Data
-@Table(name = "books")
-@NamedEntityGraph(name = "authors-genres-entity-graph", attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
+@Document(collection = "books")
 public class Book {
 
     @Id
-    @Column(name = "book_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private String id;
 
-    @Column(name = "book_name")
     private String name;
 
+    private String author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "author_fk"))
-    private Author author;
+    private String genre;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "genre_id", foreignKey = @ForeignKey(name = "genre_fk"))
-    private Genre genre;
-
-
+    public Book(String name, String author, String genre) {
+        this.name = name;
+        this.author = author;
+        this.genre = genre;
+    }
 }
 

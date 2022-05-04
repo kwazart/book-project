@@ -9,43 +9,46 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository repository;
-    private final BookRepository bookRepository;
+    private final BookService bookService;
 
     @Override
-    public Optional<Comment> getById(long id) {
+    public Optional<Comment> getById(String id) {
         return repository.findById(id);
     }
 
     @Transactional
     @Override
-    public List<Comment> getByBookId(long bookId) {
-        Optional<Book> bookOptional = bookRepository.findById(bookId);
-        return bookOptional.map(repository::findByBook).orElse(new ArrayList<>());
+    public List<Comment> getByBookId(String bookId) {
+        Optional<Book> bookOptional = bookService.getById(bookId);
+        if (bookOptional.isEmpty()) {
+            throw new ObjectNotFoundException("Incorrect book id");
+        }
+        return findAllByBook(bookOptional.get());
     }
 
     @Transactional
     @Override
-    public Comment add(String text, long bookId) {
-        Optional<Book> bookOptional = bookRepository.findById(bookId);
+    public Comment add(String text, String bookId) {
+        Optional<Book> bookOptional = bookService.getById(bookId);
         if (bookOptional.isEmpty()) {
             return null;
         }
-        return repository.save(new Comment(0, text, bookOptional.get()));
+        return repository.save(new Comment(text, bookOptional.get()));
     }
 
     @Transactional
     @Override
-    public Comment update(long commentId, String text, long bookId) {
-        Optional<Book> bookOptional = bookRepository.findById(bookId);
+    public Comment update(String commentId, String text, String bookId) {
+        Optional<Book> bookOptional = bookService.getById(bookId);
         if (bookOptional.isEmpty()) {
             throw new ObjectNotFoundException("Book not found");
         }
@@ -54,7 +57,24 @@ public class CommentServiceImpl implements CommentService {
 
     @Transactional
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public void deleteByBookId(String bookId) {
+        Optional<Book> bookOptional = bookService.getById(bookId);
+        if (bookOptional.isPresent()) {
+            List<Comment> allByBook = findAllByBook(bookOptional.get());
+            for (Comment c : allByBook) {
+                deleteById(c.getId());
+            }
+        }
+    }
+
+    // работает только в таком варианте
+    // по дефолту в MongoRepository не ищет по findAllByBook (возвращает 0)
+    private List<Comment> findAllByBook(Book book) {
+        return repository.findAll().stream().filter(c -> c.getBook().getId().equals(book.getId())).collect(Collectors.toList());
     }
 }
