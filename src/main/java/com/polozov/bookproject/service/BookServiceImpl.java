@@ -6,6 +6,7 @@ import com.polozov.bookproject.domain.Book;
 import com.polozov.bookproject.domain.Genre;
 import com.polozov.bookproject.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,5 +77,41 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteById(String id) {
         repository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public void deleteByAuthor(String authorName) {
+        repository.deleteAllByAuthor(authorName);
+    }
+
+    @Transactional
+    @Override
+    public void deleteByGenre(String genreName) {
+        repository.deleteAllByGenre(genreName);
+    }
+
+    @Transactional
+    @Override
+    public void updateAllAuthors(String oldAuthorName, String newAuthorName) {
+        List<Book> books = repository.findAll();
+        for (Book book : books) {
+            if (book.getAuthor().equals(oldAuthorName)) {
+                book.setAuthor(newAuthorName);
+                repository.save(book);
+            }
+        }
+    }
+
+    @Transactional
+    @Override
+    public void updateAllGenres(String oldGenreName, String newGenreName) {
+        List<Book> books = repository.findAll();
+        for (Book book : books) {
+            if (book.getAuthor().equals(oldGenreName)) {
+                book.setAuthor(newGenreName);
+                repository.save(book);
+            }
+        }
     }
 }

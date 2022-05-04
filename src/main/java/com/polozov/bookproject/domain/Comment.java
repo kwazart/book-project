@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -18,11 +19,11 @@ public class Comment {
 
     private String text;
 
-    @Field(name = "book")
-    private String bookId;
+    @DBRef
+    private Book book;
 
-    public Comment(String text, String bookId) {
+    public Comment(String text, Book book) {
         this.text = text;
-        this.bookId = bookId;
+        this.book = book;
     }
 }

@@ -6,18 +6,17 @@ import com.polozov.bookproject.domain.Genre;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.ComponentScan;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DataMongoTest
 @DisplayName("Dao для работы с Book должно")
-class BookRepositoryTest extends AbstractRepositoryTest {
+class BookRepositoryTest {
 
     private static final String EXPECTED_BOOK_NAME = "Пуаро";
     private static final String EXPECTED_AUTHOR_NAME = "Агата Кристи";

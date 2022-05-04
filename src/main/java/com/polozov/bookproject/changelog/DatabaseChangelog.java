@@ -4,6 +4,7 @@ import com.github.cloudyrock.mongock.ChangeLog;
 import com.github.cloudyrock.mongock.ChangeSet;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.polozov.bookproject.domain.Book;
 import org.bson.Document;
 
 import java.util.List;
@@ -88,13 +89,27 @@ public class DatabaseChangelog {
     public void insertComments(MongoDatabase db) {
         MongoCollection<Document> commentCollections = db.getCollection("comments");
         List<Document> commentList = List.of(
-                new Document().append("text", "Отлично").append("book", "10"),
-                new Document().append("text", "Замечательно").append("book", "10"),
-                new Document().append("text", "Интересно").append("book", "10"),
-                new Document().append("text", "Супер").append("book", "20"),
-                new Document().append("text", "Восхитительно").append("book", "20"),
-                new Document().append("text", "Захватывающе").append("book", "30"),
-                new Document().append("text", "Закрученно").append("book", "40")
+                new Document()
+                        .append("text", "Отлично")
+                        .append("book", new Document().append("_id", "10")),
+                new Document()
+                        .append("text", "Замечательно")
+                        .append("book", new Document().append("_id", "10")),
+                new Document()
+                        .append("text", "Интересно")
+                        .append("book",new Document().append("_id", "10")),
+                new Document()
+                        .append("text", "Супер")
+                        .append("book", new Document().append("_id", "20")),
+                new Document()
+                        .append("text", "Восхитительно")
+                        .append("book", new Document().append("_id", "20")),
+                new Document()
+                        .append("text", "Захватывающе")
+                        .append("book", new Document().append("_id", "30")),
+                new Document()
+                        .append("text", "Закрученно")
+                        .append("book", new Document().append("_id", "40"))
 
         );
         commentCollections.insertMany(commentList);

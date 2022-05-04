@@ -10,4 +10,6 @@ public interface BookRepository extends MongoRepository<Book, String> {
     List<Book> findAllByName(String name);
     List<Book> findAllByAuthor(String authorName);
     List<Book> findAllByGenre(String genre);
+    void deleteAllByAuthor(String authorName);
+    void deleteAllByGenre(String genreName);
 }

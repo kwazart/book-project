@@ -41,13 +41,13 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Transactional
     @Override
-    public Author update(String id, String authorName) {
+    public Author update(String id, String newAuthorName) {
         Optional<Author> authorOptional = repository.findById(id);
         if (authorOptional.isEmpty()) {
             throw new ObjectNotFoundException("Incorrect author id");
         }
         Author author = authorOptional.get();
-        author.setName(authorName);
+        author.setName(newAuthorName);
         return repository.save(author);
     }
 

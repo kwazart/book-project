@@ -1,6 +1,7 @@
 package com.polozov.bookproject.service;
 
 import com.polozov.bookproject.dao.GenreRepository;
+import com.polozov.bookproject.domain.Book;
 import com.polozov.bookproject.domain.Genre;
 import com.polozov.bookproject.exception.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -41,13 +42,15 @@ public class GenreServiceImpl implements GenreService {
 
     @Transactional
     @Override
-    public Genre update(String id, String genreName) {
+    public Genre update(String id, String newGenreName) {
         Optional<Genre> genreOptional = repository.findById(id);
         if (genreOptional.isEmpty()) {
             throw new ObjectNotFoundException("Incorrect genre id ");
         }
         Genre genre = genreOptional.get();
-        genre.setName(genreName);
+
+
+        genre.setName(newGenreName);
         return repository.save(genre);
     }
 
